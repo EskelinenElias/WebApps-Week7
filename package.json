@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc-watch --onSuccess \"nodemon ./dist/index.js\""
+    "start": "tsc && node ./dist/index.js",
+    "watch": "tsc-watch --onSuccess \"nodemon ./dist/index.js\""
+
   },
   "author": "Elias Eskelinen",
   "license": "ISC",
