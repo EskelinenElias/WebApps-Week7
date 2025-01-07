@@ -5,7 +5,7 @@ import { User, IUser } from "../models/User";
 const router = Router();
 
 // POST route to register an user
-router.post("/register", async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+router.post("/register", async (req: Request, res: Response) => {
   try {
     // Check if a user with the given username already exists in the database
     const existingUser: IUser | null = await User.findOne({username: req.body.username})
@@ -23,13 +23,26 @@ router.post("/register", async (req: Request, res: Response, next: NextFunction)
     })
     res.status(200).json({message: "User registered successfully"})
     return; 
-  } catch (error: any) {
+  } catch (error) {
     console.error(`Error during registration: ${error}`);
     res.status(500).json({ error: "Internal Server Error" });
     return; 
   }
 }); 
 
+// POST route to register an user
+router.get("/list", async (req: Request, res: Response) => {
+  try {
+    // Fetch users from the database
+    const users = await User.findOne({}, { password: 0 }); 
+    res.status(200).json({users: users})
+    return; 
+  } catch (error) {
+    console.error(`Error fetching users: ${error}`);
+    res.status(500).json({ error: "Internal Server Error" });
+    return; 
+  }
+}); 
 
 
 // // POST route to upload an offer

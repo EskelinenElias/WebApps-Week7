@@ -8,7 +8,7 @@ const bcryptjs_1 = __importDefault(require("bcryptjs"));
 const User_1 = require("../models/User");
 const router = (0, express_1.Router)();
 // POST route to register an user
-router.post("/register", async (req, res, next) => {
+router.post("/register", async (req, res) => {
     try {
         // Check if a user with the given username already exists in the database
         const existingUser = await User_1.User.findOne({ username: req.body.username });
@@ -29,6 +29,20 @@ router.post("/register", async (req, res, next) => {
     }
     catch (error) {
         console.error(`Error during registration: ${error}`);
+        res.status(500).json({ error: "Internal Server Error" });
+        return;
+    }
+});
+// POST route to register an user
+router.get("/list", async (req, res) => {
+    try {
+        // Fetch users from the database
+        const users = await User_1.User.findOne({}, { password: 0 });
+        res.status(200).json({ users: users });
+        return;
+    }
+    catch (error) {
+        console.error(`Error fetching users: ${error}`);
         res.status(500).json({ error: "Internal Server Error" });
         return;
     }
